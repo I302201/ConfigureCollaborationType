@@ -1,0 +1,2 @@
+# ConfigureCollaborationType
+Configure Collaboration Type
