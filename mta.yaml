@@ -1,0 +1,32 @@
+ID: ConfigureCollaborationType
+_schema-version: "2.1"
+description: Configure Collaboration Type
+version: 0.0.1
+modules:
+  - name: ConfigureCollaborationType-db
+    type: hdb
+    path: db
+    parameters:
+      memory: 256M
+      disk-quota: 256M
+    requires:
+      - name: ConfigureCollaborationType-db-hdi-container
+  - name: ConfigureCollaborationType-srv
+    type: java
+    path: srv
+    parameters:
+      memory: 1024M
+    provides:
+      - name: srv_api
+        properties:
+          url: ${default-url}
+    requires:
+      - name: ConfigureCollaborationType-db-hdi-container
+        properties:
+          JBP_CONFIG_RESOURCE_CONFIGURATION: '[tomcat/webapps/ROOT/META-INF/context.xml:
+            {"service_name_for_DefaultDB" : "~{hdi-container-name}"}]'
+resources:
+  - name: ConfigureCollaborationType-db-hdi-container
+    type: com.sap.xs.hdi-container
+    properties:
+      hdi-container-name: ${service-name}
